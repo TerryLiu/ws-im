@@ -11,10 +11,10 @@ echo "next version"
 echo $nextVersion;
 
 rm -rf $appName
-CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o $appName *.go
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o $appName ws-im
 
-docker build -t hub.docker.com/cqliuz/$appName:$nextVersion .
-docker push hub.docker.com/cqliuz/$appName:$nextVersion
+docker build -t cqliuz/$appName:$nextVersion .
+docker push cqliuz/$appName:$nextVersion
 
 git add ../
 git commit -m "$nextVersion $1"
