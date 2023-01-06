@@ -5,6 +5,7 @@ RUN update-ca-certificates
 RUN apk add --update tzdata
 ENV TZ=Asia/Shanghai
 COPY wsim /
+COPY home.html /
 RUN mkdir -p /usr/local/go/lib/time/
 COPY zoneinfo.zip /usr/local/go/lib/time/
 RUN chmod +x /wsim

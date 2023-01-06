@@ -1,4 +1,4 @@
-package main
+package cmd
 
 import (
 	"bytes"
@@ -128,7 +128,7 @@ func (c *Client) writePump() {
 }
 
 // serveWs handles websocket requests from the peer.
-func serveWs(room *Room, w http.ResponseWriter, r *http.Request, uid string) {
+func ServeWs(room *Room, w http.ResponseWriter, r *http.Request, uid string) {
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println(err)

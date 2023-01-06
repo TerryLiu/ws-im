@@ -1,4 +1,4 @@
-package main
+package cmd
 
 // Room maintains the set of active clients and broadcasts messages to the
 // clients.
@@ -16,7 +16,7 @@ type Room struct {
 	unregister chan *Client
 }
 
-func newRoom() *Room {
+func NewRoom() *Room {
 	return &Room{
 		broadcast:  make(chan []byte),
 		register:   make(chan *Client),
@@ -25,7 +25,7 @@ func newRoom() *Room {
 	}
 }
 
-func (h *Room) run() {
+func (h *Room) Run() {
 	for {
 		select {
 		case client := <-h.register:

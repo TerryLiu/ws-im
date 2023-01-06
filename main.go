@@ -4,6 +4,7 @@ import (
 	"flag"
 	"log"
 	"net/http"
+	. "ws-im/cmd"
 )
 
 var addr = flag.String("addr", ":8080", "http service address")
@@ -41,11 +42,11 @@ func main() {
 		}else{
 			proom,ok := G_house[rid]
 			if !ok {
-				proom = newRoom()
-				go proom.run()
+				proom = NewRoom()
+				go proom.Run()
 				G_house[rid]=proom
 			}
-			serveWs(proom, w, r, uid)
+			ServeWs(proom, w, r, uid)
 		}
 
 
