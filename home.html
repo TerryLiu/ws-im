@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>迷你聊天室</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript">
+var conn = null;
+window.onload=function (){
+    window.room = document.getElementById("room");
+    window.user = document.getElementById("user");
+    window.msg = document.getElementById("msg");
+    window.log = document.getElementById("log");
+    window.logged=false;
+
+    document.getElementById("form").onsubmit = function () {
+        if (!conn) {
+            return false;
+        }
+        if (!window.msg.value) {
+            return false;
+        }
+        conn.send(window.msg.value);
+        window.msg.value = "";
+        return false;
+    };
+}
+
+
+function appendLog(item) {
+    var doScroll = log.scrollTop > log.scrollHeight - log.clientHeight - 1;
+    log.appendChild(item);
+    if (doScroll) {
+        log.scrollTop = log.scrollHeight - log.clientHeight;
+    }
+}
+
+
+function loginOrlogout(){
+    if (!window.logged) {
+        if (window["WebSocket"]) {
+            var url = "ws://" + document.location.host + "/ws?room="+encodeURIComponent(window.room.value)+"&uid="+encodeURIComponent(window.user.value);
+            console.log(url)
+            conn = new WebSocket(url);
+            console.log(conn)
+            conn.onopen = function (evt) {
+                var item = document.createElement("div");
+                item.innerHTML = "<b>#已进入房间</b>";
+                appendLog(item);
+                logged=true;
+                document.getElementById("loginRoom").setAttribute("value","退出");
+            }
+            conn.onclose = function (evt) {
+                var item = document.createElement("div");
+                item.innerHTML = "<b>Connection closed.</b>";
+                appendLog(item);
+                logged=false;
+                document.getElementById("loginRoom").setAttribute("value","进入");
+            };
+            conn.onmessage = function (evt) {
+                var messages = evt.data.split('\n');
+                for (var i = 0; i < messages.length; i++) {
+                    var item = document.createElement("div");
+                    item.innerText = messages[i];
+                    appendLog(item);
+                }
+            };
+
+        } else {
+            var item = document.createElement("div");
+            item.innerHTML = "<b>Your browser does not support WebSockets.</b>";
+            appendLog(item);
+        }
+    }else {
+        conn.close()
+        var item = document.createElement("div");
+        item.innerHTML = "<b>#已退出房间</b>";
+        appendLog(item);
+        logged=false;
+        document.getElementById("loginRoom").setAttribute("value","进入");
+    }
+
+}
+
+</script>
+<style type="text/css">
+html {
+    overflow: hidden;
+}
+
+body {
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    background: gray;
+}
+
+#log {
+    background: white;
+    margin: 3em 0em 0em 0em;
+    padding: 0.5em 0.5em 0.5em 0.5em;
+    position: absolute;
+    top: 0.5em;
+    left: 0.5em;
+    right: 0.5em;
+    bottom: 3em;
+    overflow: auto;
+}
+
+#form {
+    padding: 0 0.5em 0 0.5em;
+    margin: 0;
+    position: absolute;
+    bottom: 1em;
+    left: 0px;
+    width: 100%;
+    overflow: hidden;
+}
+#title{
+    text-align: center;
+}
+</style>
+</head>
+<body>
+<h3 id="title">迷你聊天室</h3>
+<div id="log"></div>
+<form id="form">
+    用户:
+    <input type="text" id="user" size="10" value="张三" />
+    &nbsp;
+    房间号:<input type="text" id="room" size="10" value="1001" />
+    <input id="loginRoom" type="button" value="进入" onclick="loginOrlogout()" />
+    &nbsp;
+    消息内容:
+    <input type="text" id="msg" size="64" autofocus />
+    <input type="submit" value="发送" />
+</form>
+</body>
+</html>
