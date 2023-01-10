@@ -4,11 +4,16 @@ import (
 	"flag"
 	"log"
 	"net/http"
+	_ "net/http/pprof"
+
 	. "ws-im/cmd"
 )
 
-var addr = flag.String("addr", ":8080", "http service address")
-var G_house map[string]*Room
+var (
+	addr    = flag.String("addr", ":8080", "http service address")
+	debug   = flag.String("pprof", "", "type -pprof to address for pprof http")
+	G_house map[string]*Room
+)
 
 func serveHome(w http.ResponseWriter, r *http.Request) {
 	log.Println(r.URL)
@@ -25,6 +30,12 @@ func serveHome(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	flag.Parse()
+	if x := *debug; x != "" {
+		log.Printf("starting pprof server on %s", x)
+		go func() {
+			log.Printf("pprof server error: %v", http.ListenAndServe(x, nil))
+		}()
+	}
 	G_house = make(map[string]*Room, 100)
 
 	http.HandleFunc("/", serveHome)
