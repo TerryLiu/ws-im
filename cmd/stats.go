@@ -9,7 +9,7 @@ import (
 
 var (
 	// 服务器状态打印的定时器
-	G_Ticker3s *time.Ticker = time.NewTicker(time.Second * 10)
+	G_Ticker3s *time.Ticker = time.NewTicker(time.Second * 3)
 	G_Stats *stats = &stats{}
 )
 // 自增ID的原子化写法
@@ -57,7 +57,7 @@ func (s *stats) Print(t *time.Ticker) {
 			// 原子化的存储操作
 			atomic.StoreInt64(&s.clientsMax, clientsMax)
 		}
-		fmt.Printf("\r消息处理数:%v,客户端连接数:%v,客户端连接峰值:%v ... ", lastmsgs,clients,clientsMax)
+		fmt.Printf("\r%v 消息读取数:%v,客户端连接数:%v,客户端连接峰值:%v             ... ", time.Now().Format("15:04:05.000000"),lastmsgs,clients,clientsMax)
 		// fmt.Printf("\r消息处理数:%v,客户端连接数:%v,客户端连接峰值:%v,客户端最大下标:%v ... ", lastmsgs,clients,clientsMax,s.idsMax)
 		// G_Server.clients.Print()
 	}
