@@ -46,7 +46,7 @@ func main() {
 		if  rid=="" {
 			rid="0"
 		}
-		log.Printf("uid:%v",query.Get("uid"))
+		// log.Printf("uid:%v",query.Get("uid"))
 		uid:=query.Get("uid")
 		if  uid=="" {
 			w.WriteHeader(http.StatusBadRequest)
@@ -62,6 +62,10 @@ func main() {
 
 
 	})
+
+	// 服务器状态打印
+	go G_Stats.Print(G_Ticker3s)
+
 	log.Print("Listen Port",*addr)
 	err := http.ListenAndServe(*addr, nil)
 	if err != nil {

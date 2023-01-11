@@ -64,7 +64,7 @@ func (c *Client) readPump() {
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure, websocket.CloseNoStatusReceived) {
 				log.Printf("error: %v", err)
 			}else{
-				log.Printf("uid: %v has logout", c.uid)
+				// log.Printf("uid: %v has logout", c.uid)
 			}
 			break
 		}
@@ -75,6 +75,7 @@ func (c *Client) readPump() {
 			msg=append(msg, []byte(c.uid)...)
 			msg=append(msg, ':')
 			msg=append(msg, message...)
+			G_Stats.messageAdd()
 			c.room.broadcast <- msg
 		}
 	}
@@ -97,7 +98,7 @@ func (c *Client) writePump() {
 			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
 			if !ok {
 				// The room closed the channel.
-				log.Printf("conn of uid:%v closed",c.uid)
+				// log.Printf("conn of uid:%v closed",c.uid)
 				c.conn.WriteMessage(websocket.CloseMessage, []byte{})
 				return
 			}
