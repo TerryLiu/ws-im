@@ -41,7 +41,7 @@ func main() {
 	http.HandleFunc("/", serveHome)
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		query := r.URL.Query()
-		log.Printf("room:%v",query.Get("room"))
+		// log.Printf("room:%v",query.Get("room"))
 		rid:=query.Get("room")
 		if  rid=="" {
 			rid="0"
