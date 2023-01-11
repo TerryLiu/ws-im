@@ -57,7 +57,7 @@ func (s *stats) Print(t *time.Ticker) {
 			// 原子化的存储操作
 			atomic.StoreInt64(&s.clientsMax, clientsMax)
 		}
-		fmt.Printf("\r%v 消息读取数:%v,客户端连接数:%v,客户端连接峰值:%v             ... ", time.Now().Format("15:04:05.000000"),lastmsgs,clients,clientsMax)
+		fmt.Printf("\r%v 消息读取数:%v,客户端连接数:%v,客户端连接峰值:%v               ", time.Now().Format("15:04:05.000000"),lastmsgs,clients,clientsMax)
 		// fmt.Printf("\r消息处理数:%v,客户端连接数:%v,客户端连接峰值:%v,客户端最大下标:%v ... ", lastmsgs,clients,clientsMax,s.idsMax)
 		// G_Server.clients.Print()
 	}
