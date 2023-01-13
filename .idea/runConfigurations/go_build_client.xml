@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="go build client" type="GoApplicationRunConfiguration" factoryName="Go Application">
+    <module name="ws-im" />
+    <working_directory value="$PROJECT_DIR$" />
+    <go_parameters value="-i" />
+    <parameters value="-url http://192.168.1.113 -rooms 300 -ids 5 -s 60" />
+    <kind value="DIRECTORY" />
+    <filePath value="$PROJECT_DIR$" />
+    <package value="ws-im" />
+    <directory value="$PROJECT_DIR$/test" />
+    <method v="2" />
+  </configuration>
+</component>

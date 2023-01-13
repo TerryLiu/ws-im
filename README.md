@@ -12,7 +12,7 @@ $ go run ../main.go
 ## 编译命令
 ```shell
 $ cd deploy
-$ ./build_linux.sh 1.0.2
+$ ./build_linux.sh 1.0.5
 
 ```
 即可得到编译好的可执行文件`deploy/wsim`, 
@@ -20,7 +20,7 @@ $ ./build_linux.sh 1.0.2
 
 ## 或直接用docker运行
 ```shell
-docker run -p 80:8080 cqliuz/wsim:1.0.2
+docker run --ulimit nofile=100000:100000 --rm --name wsim_demo -p 80:8080 -p 6060:6060 cqliuz/wsim:1.0.5 -pprof :6060
 ```
 假设docker宿主机的IP为192.168.1.113,
 此时访问 http://192.168.1.113 即可进入聊天室.
